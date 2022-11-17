@@ -1,44 +1,43 @@
-// Model er moddeh er Ticket
+// eikhane database er moddeh ekekti ticket er moddeh ki ki functionality gula thakbe ta thakbe
 
-const Ticket = require("../db/db");
+const Ticket = require("../models/Ticket");
 
-class MyDb {
+class myDb {
+  // sob tickets gula amra ei array te rakhbo:
   constructor() {
-    // amader models er moddeh Ticket.js er moddeh amra shudu dataBase er model that means dataBase(ekti Ticket) er shape ti kemon hobe ta likhechi. Ekhon ei class er moddeh amra onekgula ticket ke jate use korte pari and dataBase e save korte pari tai this.tickets ekti array neoaa.
     this.tickets = [];
   }
 
   /**
-   * create and save a new ticket in the database.
-   * @param {string} userName
+   * create a single ticket in the database:
+   * @param {string} username
    * @param {number} price
-   * @returns {Object} return a ticket object
    */
-  create(userName, price) {
-    const ticket = new Ticket(userName, price);
+  create(username, price) {
+    const ticket = new Ticket(username, price);
     this.tickets.push(ticket);
     return ticket;
   }
 
   /**
-   *
-   * @param {string} userName
+   * create multiple tickets for one user
+   * @param {string} username
    * @param {number} price
    * @param {number} quantity
    * @returns {Array<Ticket>}
    */
 
-  bulkCreate(userName, price, quantity) {
+  bulkCreate(username, price, quantity) {
     const result = [];
-    for (let i = 0; i < quantity; i++) {
-      const ticket = this.create(userName, price);
+    for (let i = 0; i < quantity.length; i++) {
+      const ticket = this.create(username, price);
       result.push(ticket);
     }
     return result;
   }
   /**
-   *
-   * @returns {Array<Ticket>} all available tickets
+   * returns all available tickets
+   * @returns {Ticket}
    */
   find() {
     return this.tickets;
@@ -47,43 +46,13 @@ class MyDb {
   /**
    *
    * @param {string} ticketId
-   * @returns {Ticket} ticket
+   * @return {Ticket}
    */
-
   findById(ticketId) {
-    const ticket = this.tickets.find(
-      /**
-       *
-       * @param {Ticket} tk
-       * @returns
-       */
-
-      (tk) => tk.id === ticketId
-    );
-
+    const ticket = this.tickets.find((ticket) => ticket.id === ticketId);
     return ticket;
   }
-
-  /**
-   *
-   * @param {string} userName
-   * returns {Array<Ticket>} filtered ticket by userName
-   */
-
-  findByUserName(userName) {
-    const tickets = this.tickets.filter(
-      (tk) =>
-        /**
-         * @param {Ticket} ticket
-         */
-
-        tk.userName === userName
-    );
-    return tickets;
-  }
 }
+const myDb = new myDb();
 
-// creating a mydb object
-const mydb = new MyDb();
-
-module.exports = mydb;
+module.exports = myDb;
